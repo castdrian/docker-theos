@@ -3,7 +3,8 @@ FROM bitnami/minideb:latest
 ARG USER=default
 ENV HOME /home/$USER
 
-RUN apt-get update && apt-get install sudo curl bash -y
+RUN apt update && apt install sudo curl bash 
+RUN apt install swiftlang=5.10*
 
 RUN adduser --disabled-password --gecos "" $USER \
 	&& echo "$USER ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/$USER \
