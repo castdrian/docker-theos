@@ -12,4 +12,4 @@ RUN adduser --disabled-password --gecos "" $USER \
 USER $USER
 WORKDIR $HOME
 
-RUN bash -c "$(curl -fsSL https://raw.githubusercontent.com/theos/theos/master/bin/install-theos)"
+RUN echo y | bash -c "$(curl -fsSL https://raw.githubusercontent.com/theos/theos/master/bin/install-theos)"
