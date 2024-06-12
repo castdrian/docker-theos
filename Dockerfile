@@ -3,7 +3,7 @@ FROM bitnami/minideb:latest
 ARG USER=default
 ENV HOME /home/$USER
 
-RUN apt-get update && apt-get install sudo curl bash
+RUN apt-get update && apt-get install sudo curl bash -y
 
 RUN adduser -D $USER \
 	&& echo "$USER ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/$USER \
