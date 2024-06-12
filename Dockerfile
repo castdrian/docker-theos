@@ -1,9 +1,9 @@
-FROM alpine:latest
+FROM bitnami/minideb:latest
 
 ARG USER=default
 ENV HOME /home/$USER
 
-RUN apk add --update sudo curl bash
+RUN apt-get update && apt-get install sudo curl bash
 
 RUN adduser -D $USER \
 	&& echo "$USER ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/$USER \
