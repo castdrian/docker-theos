@@ -5,7 +5,7 @@ ENV HOME /home/$USER
 
 RUN apt-get update && apt-get install sudo curl bash -y
 
-RUN adduser -D $USER \
+RUN adduser --disabled-password --gecos "" $USER \
 	&& echo "$USER ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/$USER \
 	&& chmod 0440 /etc/sudoers.d/$USER
 
