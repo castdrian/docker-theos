@@ -3,7 +3,7 @@ FROM alpine:latest
 ARG USER=default
 ENV HOME /home/$USER
 
-RUN apk add --update sudo apk add curl bash
+RUN apk add --update sudo curl bash
 
 RUN adduser -D $USER \
 	&& echo "$USER ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/$USER \
