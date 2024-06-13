@@ -2,6 +2,7 @@ FROM bitnami/minideb:latest
 
 ARG USER=default
 ENV HOME /home/$USER
+ENV THEOS=$HOME/theos
 
 RUN apt update && apt install bash curl sudo -y
 RUN curl -s https://swiftlang.xyz/install.sh | bash && apt install swiftlang -y
@@ -18,6 +19,4 @@ RUN yes | bash -c "$(curl -fsSL https://raw.githubusercontent.com/theos/theos/ma
 USER root
 
 RUN theos/bin/swift-bootstrapper.pl /usr/bin/swift theos/vendor/orion
-RUN rm theos/vendor/orion/Package.resolved
-
 RUN chown -R $USER:$USER $HOME/theos
