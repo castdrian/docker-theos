@@ -14,4 +14,4 @@ USER $USER
 WORKDIR $HOME
 
 RUN yes | bash -c "$(curl -fsSL https://raw.githubusercontent.com/theos/theos/master/bin/install-theos)"
-RUN theos/bin/swift-bootstrapper.pl /usr/bin/swift theos/vendor/orion/
+RUN theos/bin/swift-bootstrapper.pl /usr/bin/swift theos/vendor/orion
