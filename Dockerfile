@@ -4,7 +4,7 @@ ARG USER=default
 ENV HOME /home/$USER
 ENV THEOS=$HOME/theos
 
-RUN apt update && apt install bash curl libarchive-tools sudo wget libncurses5 -y
+RUN apt update && apt install bash curl libarchive-tools sudo wget -y
 
 RUN adduser --disabled-password --gecos "" $USER \
 	&& echo "$USER ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/$USER \
@@ -20,12 +20,7 @@ RUN TMP_DL=$(mktemp -d) \
 	&& tar -xvf $TMP_DL/swift-5.8-ubuntu22.04.tar.xz -C $THEOS/toolchain \
 	&& rm -Rf $TMP_DL
 
-RUN cp $THEOS/vendor/templates/iphone_tweak_swift.nic.tar $THEOS/vendor/nic/templates/ \
-	&& $THEOS/vendor/nic/bin/nic.pl --name setup --packagename setup.app.dev --user castdrian --template 1\
-	&& cd setup \
-	&& make
-
-RUN rm -rf setup
+RUN theos/bin/swift-bootstrapper.pl swift theos/vendor/orion
 
 USER root
 RUN chown -R $USER:$USER $HOME/theos
