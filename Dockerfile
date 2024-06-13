@@ -1,14 +1,9 @@
 FROM bitnami/minideb:latest
 
-ARG USER=root
-ENV HOME /home/$USER
-ENV THEOS=$HOME/theos
+ENV THEOS=root/theos
 
 RUN apt update && apt install bash curl sudo build-essential fakeroot libtinfo5 libz3-dev rsync perl unzip git libplist-utils wget p7zip-full -y
 RUN curl -s https://swiftlang.xyz/install.sh | bash && apt install swiftlang -y
-
-WORKDIR $HOME
-
 RUN git clone https://github.com/theos/theos.git $THEOS --recursive
 
 RUN TMP_DL=$(mktemp -d) \
