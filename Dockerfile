@@ -4,7 +4,7 @@ ARG USER=default
 ENV HOME /home/$USER
 ENV THEOS=$HOME/theos
 
-RUN apt update && apt install bash curl libarchive-tools sudo wget -y
+RUN apt update && apt install bash curl libarchive-tools sudo wget libncurses5 -y
 
 RUN adduser --disabled-password --gecos "" $USER \
 	&& echo "$USER ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/$USER \
