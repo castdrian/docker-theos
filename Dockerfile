@@ -4,8 +4,8 @@ ARG USER=default
 ENV HOME /home/$USER
 ENV THEOS=$HOME/theos
 
-RUN apt update && apt install bash curl sudo -y
-RUN curl -s https://swiftlang.xyz/install.sh | bash && apt install swiftlang=5.8* -y
+RUN apt update && apt install bash curl clang sudo -y
+RUN curl -s https://swiftlang.xyz/install.sh | bash && apt install swiftlang -y
 
 RUN adduser --disabled-password --gecos "" $USER \
 	&& echo "$USER ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/$USER \
