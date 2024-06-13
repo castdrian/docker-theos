@@ -21,7 +21,7 @@ RUN TMP_DL=$(mktemp -d) \
 	&& tar -xvf $TMP_DL/swift-5.8-ubuntu22.04.tar.xz -C $THEOS/toolchain \
 	&& rm -Rf $TMP_DL
 
-RUN $THEOS/bin/swift-bootstrapper.pl swift $THEOS/vendor/orion
-
 USER root
+
+RUN $THEOS/bin/swift-bootstrapper.pl swift $THEOS/vendor/orion
 RUN chown -R $USER:$USER $THEOS
