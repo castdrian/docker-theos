@@ -1,9 +1,17 @@
 FROM bitnami/minideb:latest
 
 RUN apt update && apt install build-essential fakeroot libtinfo5 libz3-dev rsync curl wget perl unzip git sudo libplist-utils p7zip-full libncurses6 libxml2 -y
+
+RUN groupadd -g 121 docker && \
+	useradd -u 1001 -g docker -m runner && \
+	echo "runner ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
+
+USER runner
+WORKDIR /home/runner
+
 RUN git clone https://github.com/theos/theos --recursive
 
-ENV THEOS=/theos
+ENV THEOS=/home/runner/theos
 
 RUN TMP_DL=$(mktemp -d) && \
 	wget --no-verbose https://github.com/kabiroberai/swift-toolchain-linux/releases/download/v2.3.0/swift-5.8-ubuntu22.04.tar.xz -P $TMP_DL && \
