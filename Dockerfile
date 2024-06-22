@@ -22,6 +22,6 @@ RUN cd $THEOS && \
 	git checkout orion && \
 	git submodule update --init
 
-RUN printf "20\nsetup\n\n\n\n\n" | $THEOS/bin/nic.pl
+RUN printf "18\nsetup\n\n\n\n\n" | $THEOS/bin/nic.pl
 RUN cd setup && make
 RUN rm -rf setup
