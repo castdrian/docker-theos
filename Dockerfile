@@ -1,27 +1,27 @@
 FROM bitnami/minideb:latest
 
-ARG USER=default
-ENV HOME /home/$USER
-ENV THEOS=$HOME/theos
+RUN apt update && apt install build-essential fakeroot libtinfo5 libz3-dev rsync curl wget perl unzip git sudo libplist-utils p7zip-full -y
+RUN git clone https://github.com/theos/theos --recursive
 
-RUN apt update && apt install bash curl libarchive-tools sudo wget -y
-RUN curl -s https://swiftlang.xyz/install.sh | bash && apt install swiftlang -y
+ENV THEOS=/theos
 
-RUN adduser --disabled-password --gecos "" $USER \
-	&& echo "$USER ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/$USER \
-	&& chmod 0440 /etc/sudoers.d/$USER
+RUN TMP_DL=$(mktemp -d) && \
+	wget --no-verbose https://github.com/kabiroberai/swift-toolchain-linux/releases/download/v2.3.0/swift-5.8-ubuntu22.04.tar.xz -P $TMP_DL && \
+	tar -xvf $TMP_DL/swift-5.8-ubuntu22.04.tar.xz -C $THEOS/toolchain && \
+	rm -Rf $TMP_DL
 
-USER $USER
-WORKDIR $HOME
+RUN cd $THEOS/sdks && \
+	wget --no-verbose https://github.com/theos/sdks/archive/master.zip && \
+	TMP=$(mktemp -d) && \
+	7z x master.zip -o$TMP && \
+	mv $TMP/*-master/*.sdk $THEOS/sdks && \
+	rm -r master.zip $TMP
 
-RUN yes | bash -c "$(curl -fsSL https://raw.githubusercontent.com/theos/theos/master/bin/install-theos)"
+RUN cd $THEOS && \
+	git fetch && \
+	git checkout orion && \
+	git submodule update --init
 
-RUN TMP_DL=$(mktemp -d) \
-	&& wget --no-verbose https://github.com/kabiroberai/swift-toolchain-linux/releases/download/v2.3.0/swift-5.8-ubuntu22.04.tar.xz -P $TMP_DL \
-	&& tar -xvf $TMP_DL/swift-5.8-ubuntu22.04.tar.xz -C $THEOS/toolchain \
-	&& rm -Rf $TMP_DL
-
-USER root
-
-RUN $THEOS/bin/swift-bootstrapper.pl swift $THEOS/vendor/orion
-RUN chown -R $USER:$USER $THEOS
+RUN printf "20\nsetup\n\n\n\n\n" | $THEOS/bin/nic.pl
+RUN cd setup && make
+RUN rm -rf setup
