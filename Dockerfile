@@ -25,7 +25,3 @@ RUN cd $THEOS && \
 RUN printf "18\nsetup\n\n\n\n\n" | $THEOS/bin/nic.pl
 RUN cd setup && make
 RUN rm -rf setup
-
-RUN groupadd -g 121 docker && \
-	useradd -u 1001 -g docker -m runner && \
-	echo "runner ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
