@@ -2,7 +2,7 @@ name: Docker
 
 on:
   schedule:
-    - cron: '32 11 * * *'
+   - cron: '* * * * 0'
   push:
     branches: [ main ]
     tags: [ 'v*.*.*' ]
@@ -44,11 +44,13 @@ jobs:
         id: meta
         uses: docker/metadata-action@v5
         with:
-          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
-          flavor: |
-            latest=auto
+          images: |
+            castdrian/docker-theos
           tags: |
-            type=semver,pattern={{version}},value=v${{ steps.package-version.outputs.current-version }}
+            type=ref,event=branch
+            type=ref,event=pr
+            type=semver,pattern={{version}}
+            type=semver,pattern={{major}}.{{minor}}
 
       - name: Build and push Docker image
         id: build-and-push
