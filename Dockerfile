@@ -1,6 +1,6 @@
 FROM bitnami/minideb:latest
 
-RUN apt update && apt install build-essential fakeroot libtinfo5 libz3-dev rsync curl wget perl unzip git sudo libplist-utils p7zip-full -y
+RUN apt update && apt install build-essential fakeroot libtinfo5 libz3-dev rsync curl wget perl unzip git sudo libplist-utils p7zip-full libncurses6 -y
 RUN git clone https://github.com/theos/theos --recursive
 
 ENV THEOS=/theos
